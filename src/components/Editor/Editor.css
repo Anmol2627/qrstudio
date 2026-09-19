@@ -1,0 +1,82 @@
+/* ===================================================================
+   Editor Layout Styles
+   ===================================================================
+   The editor uses a three-column layout on desktop:
+   
+   [Sidebar: 200px] | [Center: flexible] | [Preview: ~380px]
+   
+   On mobile, this collapses to a single column.
+   
+   CSS Grid is ideal here because we need columns of DIFFERENT sizes
+   that maintain their proportions. Flexbox could work too, but Grid
+   gives us more precise control over column widths.
+   =================================================================== */
+
+.editor {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr 380px;
+  min-height: calc(100vh - var(--header-height));
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* --- Sidebar (QR Type Navigation) -------------------------------- */
+.editor-sidebar {
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-4);
+  background-color: var(--color-bg-primary);
+}
+
+/* --- Center Panel (Form + Customization) ------------------------- */
+.editor-center {
+  padding: var(--space-6) var(--space-8);
+  overflow-y: auto;
+  max-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* --- Preview Panel ----------------------------------------------- */
+.editor-preview {
+  border-left: 1px solid var(--color-border);
+  padding: var(--space-6);
+  background-color: var(--color-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  max-height: calc(100vh - var(--header-height));
+}
+
+/* --- Responsive: Tablet ------------------------------------------ */
+@media (max-width: 1024px) {
+  .editor {
+    grid-template-columns: 1fr 340px;
+  }
+
+  .editor-sidebar {
+    display: none; /* Sidebar hidden on tablet — types shown differently */
+  }
+}
+
+/* --- Responsive: Mobile ------------------------------------------ */
+@media (max-width: 768px) {
+  .editor {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .editor-center {
+    max-height: none;
+    padding: var(--space-4);
+  }
+
+  .editor-preview {
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    max-height: none;
+    padding: var(--space-4);
+  }
+}

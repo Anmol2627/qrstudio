@@ -1,0 +1,223 @@
+/* ===================================================================
+   Customization Panel Styles
+   =================================================================== */
+
+.customization-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.customization-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* --- Control Group ----------------------------------------------- */
+.custom-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.custom-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.custom-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.custom-value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Range Slider ------------------------------------------------ 
+   Styling native range inputs is tricky because each browser renders
+   them differently. These styles target WebKit (Chrome/Safari) and 
+   Firefox separately to create a consistent look.
+*/
+.custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+/* WebKit (Chrome, Safari, Edge) thumb */
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: pointer;
+  border: 2px solid var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast);
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Firefox thumb */
+.custom-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: pointer;
+  border: 2px solid var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.custom-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* --- Color Controls ---------------------------------------------- */
+.custom-colors-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.custom-color-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.custom-color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  background-color: var(--color-surface);
+  transition: border-color var(--transition-fast);
+}
+
+.custom-color-input-wrapper:focus-within {
+  border-color: var(--color-border-focus);
+}
+
+.custom-color-picker {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.custom-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.custom-color-picker::-webkit-color-swatch {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.custom-color-picker::-moz-color-swatch {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.custom-color-text {
+  border: none;
+  padding: var(--space-1);
+  font-size: var(--font-size-sm);
+  font-family: 'Courier New', monospace;
+  color: var(--color-text-secondary);
+  background: transparent;
+  width: 80px;
+}
+
+.custom-color-text:focus {
+  outline: none;
+  box-shadow: none;
+  color: var(--color-text-primary);
+}
+
+/* --- Info Button ------------------------------------------------- */
+.custom-info-btn {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-tertiary);
+  padding: 2px;
+  border-radius: var(--radius-full);
+  transition: color var(--transition-fast);
+}
+
+.custom-info-btn:hover {
+  color: var(--color-accent);
+}
+
+/* --- Advanced Options Toggle ------------------------------------- */
+.custom-advanced-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-3) 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  border-top: 1px solid var(--color-border);
+  transition: color var(--transition-fast);
+}
+
+.custom-advanced-toggle:hover {
+  color: var(--color-accent);
+}
+
+/* --- Advanced Options Content ------------------------------------ */
+.custom-advanced {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  animation: slideDown 200ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive -------------------------------------------------- */
+@media (max-width: 480px) {
+  .custom-colors-row {
+    grid-template-columns: 1fr;
+  }
+}

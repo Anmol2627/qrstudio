@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Header from './components/Header/Header'
 import LandingPage from './components/LandingPage/LandingPage'
+import Editor from './components/Editor/Editor'
 import './App.css'
 
 /*
@@ -58,10 +59,7 @@ function App() {
         {currentPage === 'landing' ? (
           <LandingPage onGetStarted={() => setCurrentPage('editor')} />
         ) : (
-          // Placeholder for the Editor — we'll build this in Phase 2
-          <div className="editor-placeholder">
-            <p>Editor coming in Phase 2...</p>
-          </div>
+          <Editor />
         )}
       </main>
     </div>
