@@ -5,6 +5,7 @@ import QRPreview from '../QRPreview/QRPreview'
 import CustomizationPanel from '../CustomizationPanel/CustomizationPanel'
 import PresetSelector from '../PresetSelector/PresetSelector'
 import ContentAssistant from '../ContentAssistant/ContentAssistant'
+import ReliabilityAssistant from '../ReliabilityAssistant/ReliabilityAssistant'
 import { DEFAULT_QR_CONFIG } from '../../data/constants'
 import './Editor.css'
 
@@ -152,6 +153,12 @@ function Editor({ initialConfig = DEFAULT_QR_CONFIG, onSaveToRecent }) {
         <QRPreview 
           config={qrConfig} 
           onSave={() => onSaveToRecent && onSaveToRecent(qrConfig)}
+        />
+        
+        {/* Real-time scan warnings */}
+        <ReliabilityAssistant 
+          config={qrConfig} 
+          onFix={updateConfig} 
         />
       </aside>
     </div>

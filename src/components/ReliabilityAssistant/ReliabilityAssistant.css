@@ -1,0 +1,92 @@
+/* ===================================================================
+   Reliability Assistant Styles
+   =================================================================== */
+
+.reliability-assistant {
+  margin-top: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-sm);
+  animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ra-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  color: var(--color-text-secondary);
+}
+
+.ra-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ra-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ra-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+}
+
+.ra-item.warning {
+  background-color: rgba(255, 170, 0, 0.1);
+  color: #b37700;
+  border-left: 3px solid #ffaa00;
+}
+
+.ra-item.critical {
+  background-color: rgba(193, 18, 31, 0.1);
+  color: var(--color-error);
+  border-left: 3px solid var(--color-error);
+}
+
+.ra-item-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ra-item-msg {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.ra-fix-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--color-surface);
+  border: 1px solid currentColor;
+  color: inherit;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.ra-fix-btn:hover {
+  background-color: currentColor;
+  color: var(--color-surface);
+}
