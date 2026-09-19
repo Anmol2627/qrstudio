@@ -4,6 +4,7 @@ import QRForm from '../QRForm/QRForm'
 import QRPreview from '../QRPreview/QRPreview'
 import CustomizationPanel from '../CustomizationPanel/CustomizationPanel'
 import PresetSelector from '../PresetSelector/PresetSelector'
+import ContentAssistant from '../ContentAssistant/ContentAssistant'
 import { DEFAULT_QR_CONFIG } from '../../data/constants'
 import './Editor.css'
 
@@ -117,6 +118,14 @@ function Editor({ initialConfig = DEFAULT_QR_CONFIG, onSaveToRecent }) {
         and the customization controls (size, colors, etc.)
       */}
       <section className="editor-center" role="main">
+        <ContentAssistant 
+          onParsed={(parsedData) => {
+            // The AI assistant returns a type and data object.
+            // We merge this into the existing config (preserving colors/size)
+            updateConfig(parsedData)
+          }} 
+        />
+
         <PresetSelector 
           activeConfig={qrConfig} 
           onApplyPreset={updateConfig} 
