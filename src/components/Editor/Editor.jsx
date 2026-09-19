@@ -56,8 +56,14 @@ import './Editor.css'
   
   For now it's a minor optimization, but it's a good habit to learn.
 */
-function Editor() {
-  const [qrConfig, setQrConfig] = useState(DEFAULT_QR_CONFIG)
+function Editor({ initialConfig = DEFAULT_QR_CONFIG, onSaveToRecent }) {
+  const [qrConfig, setQrConfig] = useState(initialConfig)
+
+  // When a user clicks "Reuse" in the Recent page, App.jsx updates initialConfig.
+  // We need this useEffect to actually apply that new config to our state.
+  useEffect(() => {
+    setQrConfig(initialConfig)
+  }, [initialConfig])
 
   /*
     updateConfig merges partial updates into the existing config.
@@ -134,7 +140,10 @@ function Editor() {
         Updates in real time as the user changes any setting.
       */}
       <aside className="editor-preview" role="complementary" aria-label="QR code preview">
-        <QRPreview config={qrConfig} />
+        <QRPreview 
+          config={qrConfig} 
+          onSave={() => onSaveToRecent && onSaveToRecent(qrConfig)}
+        />
       </aside>
     </div>
   )

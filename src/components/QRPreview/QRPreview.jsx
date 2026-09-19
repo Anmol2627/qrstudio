@@ -44,7 +44,7 @@ import './QRPreview.css'
   React's declarative model can't describe canvas drawing operations,
   so we "escape" into imperative DOM access with a ref.
 */
-function QRPreview({ config }) {
+function QRPreview({ config, onSave }) {
   const canvasRef = useRef(null)
   const [error, setError] = useState(null)
   const [isEmpty, setIsEmpty] = useState(true)
@@ -153,6 +153,9 @@ function QRPreview({ config }) {
     link.download = `qrstudio-${config.type}-${Date.now()}.png`
     link.href = dataUrl
     link.click()
+    
+    // Auto-save to recent history upon successful download
+    if (onSave) onSave()
   }
 
   // Copy QR code to clipboard
@@ -176,6 +179,9 @@ function QRPreview({ config }) {
       await navigator.clipboard.write([
         new ClipboardItem({ 'image/png': blob })
       ])
+      
+      // Auto-save to recent history upon successful copy
+      if (onSave) onSave()
       
       // TODO: Show a "Copied!" toast notification (Phase 14)
     } catch (err) {
