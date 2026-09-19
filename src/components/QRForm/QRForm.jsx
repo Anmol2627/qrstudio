@@ -1,4 +1,7 @@
-import { QR_TYPES, QR_TYPE_LABELS } from '../../data/constants'
+import { useState, useEffect } from 'react'
+import { AlertCircle } from 'lucide-react'
+import { QR_TYPES } from '../../data/constants'
+import { validateQrData } from '../../utils/validation'
 import './QRForm.css'
 
 /*
@@ -40,11 +43,41 @@ import './QRForm.css'
   extract it into its own component later.
 */
 function QRForm({ type, data, onDataChange }) {
+  const [errors, setErrors] = useState({})
+  const [touched, setTouched] = useState({})
+
+  // Run validation whenever data or type changes
+  useEffect(() => {
+    const currentErrors = validateQrData(type, data)
+    setErrors(currentErrors)
+  }, [type, data])
+
+  // Reset touched state when type changes
+  useEffect(() => {
+    setTouched({})
+  }, [type])
 
   // Helper: creates an onChange handler for a specific field
-  // This avoids writing a separate function for each input
   const handleChange = (field) => (e) => {
     onDataChange({ [field]: e.target.value })
+  }
+
+  // Helper: creates an onBlur handler to mark a field as touched
+  const handleBlur = (field) => () => {
+    setTouched(prev => ({ ...prev, [field]: true }))
+  }
+
+  // Helper: safely renders an error message if the field is touched and invalid
+  const renderError = (field) => {
+    if (touched[field] && errors[field]) {
+      return (
+        <div className="form-error">
+          <AlertCircle size={14} />
+          <span>{errors[field]}</span>
+        </div>
+      )
+    }
+    return null
   }
 
   // Renders the form fields for the current QR type
@@ -60,12 +93,14 @@ function QRForm({ type, data, onDataChange }) {
               <input
                 id="qr-url"
                 type="url"
-                className="form-input"
+                className={`form-input ${touched.url && errors.url ? 'error' : ''}`}
                 placeholder="https://example.com"
                 value={data.url || ''}
                 onChange={handleChange('url')}
+                onBlur={handleBlur('url')}
                 autoComplete="url"
               />
+              {renderError('url')}
             </div>
           </div>
         )
@@ -79,12 +114,14 @@ function QRForm({ type, data, onDataChange }) {
               <label htmlFor="qr-text" className="form-label">Text</label>
               <textarea
                 id="qr-text"
-                className="form-input form-textarea"
+                className={`form-input form-textarea ${touched.text && errors.text ? 'error' : ''}`}
                 placeholder="Enter your text here..."
                 value={data.text || ''}
                 onChange={handleChange('text')}
+                onBlur={handleBlur('text')}
                 rows={4}
               />
+              {renderError('text')}
             </div>
           </div>
         )
@@ -99,12 +136,14 @@ function QRForm({ type, data, onDataChange }) {
               <input
                 id="qr-email"
                 type="email"
-                className="form-input"
+                className={`form-input ${touched.email && errors.email ? 'error' : ''}`}
                 placeholder="hello@example.com"
                 value={data.email || ''}
                 onChange={handleChange('email')}
+                onBlur={handleBlur('email')}
                 autoComplete="email"
               />
+              {renderError('email')}
             </div>
             <div className="form-group">
               <label htmlFor="qr-email-subject" className="form-label">
@@ -145,12 +184,14 @@ function QRForm({ type, data, onDataChange }) {
               <input
                 id="qr-phone"
                 type="tel"
-                className="form-input"
+                className={`form-input ${touched.phone && errors.phone ? 'error' : ''}`}
                 placeholder="+1 (555) 123-4567"
                 value={data.phone || ''}
                 onChange={handleChange('phone')}
+                onBlur={handleBlur('phone')}
                 autoComplete="tel"
               />
+              {renderError('phone')}
             </div>
           </div>
         )
@@ -167,22 +208,26 @@ function QRForm({ type, data, onDataChange }) {
               <input
                 id="qr-wifi-ssid"
                 type="text"
-                className="form-input"
+                className={`form-input ${touched.ssid && errors.ssid ? 'error' : ''}`}
                 placeholder="MyNetwork"
                 value={data.ssid || ''}
                 onChange={handleChange('ssid')}
+                onBlur={handleBlur('ssid')}
               />
+              {renderError('ssid')}
             </div>
             <div className="form-group">
               <label htmlFor="qr-wifi-password" className="form-label">Password</label>
               <input
                 id="qr-wifi-password"
                 type="password"
-                className="form-input"
+                className={`form-input ${touched.password && errors.password ? 'error' : ''}`}
                 placeholder="••••••••"
                 value={data.password || ''}
                 onChange={handleChange('password')}
+                onBlur={handleBlur('password')}
               />
+              {renderError('password')}
             </div>
             <div className="form-group">
               <label htmlFor="qr-wifi-security" className="form-label">Security Type</label>

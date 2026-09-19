@@ -1,0 +1,124 @@
+/* ===================================================================
+   Preset Selector Styles
+   =================================================================== */
+
+.preset-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.preset-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.preset-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.preset-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.preset-list-container {
+  /* Enables horizontal scrolling if many presets are added */
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+  
+  /* Hide scrollbar for a cleaner look, but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.preset-list-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.preset-list {
+  display: flex;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 2px; /* Prevent focus ring clipping */
+}
+
+.preset-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 72px;
+  text-align: center;
+  transition: transform var(--transition-fast);
+}
+
+.preset-card:hover {
+  transform: translateY(-2px);
+}
+
+.preset-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- Simulated QR Graphic ---------------------------------------- 
+   Instead of generating actual mini QR canvases (which is slow),
+   we use CSS shapes to draw something that *looks* like a QR code.
+*/
+.preset-qr-sim {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  background-color: currentColor;
+  /* We use clip-path to punch out holes and make it look like a QR */
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%,
+    /* Top Left Eye */
+    5% 5%, 5% 35%, 35% 35%, 35% 5%, 5% 5%,
+    12% 12%, 28% 12%, 28% 28%, 12% 28%, 12% 12%,
+    /* Top Right Eye */
+    65% 5%, 65% 35%, 95% 35%, 95% 5%, 65% 5%,
+    72% 12%, 88% 12%, 88% 28%, 72% 28%, 72% 12%,
+    /* Bottom Left Eye */
+    5% 65%, 5% 95%, 35% 95%, 35% 65%, 5% 65%,
+    12% 72%, 28% 72%, 28% 88%, 12% 88%, 12% 72%
+  );
+}
+
+.preset-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.preset-name {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.preset-card.active .preset-name {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-semibold);
+}
+
+.preset-check {
+  color: var(--color-accent);
+}

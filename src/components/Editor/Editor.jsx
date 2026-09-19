@@ -3,6 +3,7 @@ import QRTypeSelector from '../QRTypeSelector/QRTypeSelector'
 import QRForm from '../QRForm/QRForm'
 import QRPreview from '../QRPreview/QRPreview'
 import CustomizationPanel from '../CustomizationPanel/CustomizationPanel'
+import PresetSelector from '../PresetSelector/PresetSelector'
 import { DEFAULT_QR_CONFIG } from '../../data/constants'
 import './Editor.css'
 
@@ -110,11 +111,17 @@ function Editor() {
         and the customization controls (size, colors, etc.)
       */}
       <section className="editor-center" role="main">
+        <PresetSelector 
+          activeConfig={qrConfig} 
+          onApplyPreset={updateConfig} 
+        />
+        
         <QRForm 
           type={qrConfig.type}
           data={qrConfig.data}
           onDataChange={updateData}
         />
+        
         <CustomizationPanel
           config={qrConfig}
           onConfigChange={updateConfig}
