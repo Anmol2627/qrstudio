@@ -1,4 +1,5 @@
-import { QrCode } from 'lucide-react'
+import { useState } from 'react'
+import { QrCode, Menu, X } from 'lucide-react'
 import './Header.css'
 
 /*
@@ -32,6 +33,8 @@ import './Header.css'
   </header>
 */
 function Header({ currentPage, onNavigate }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   // Navigation items — defined as data so we can map over them
   // This avoids repeating the same JSX structure for each link
   const navItems = [
@@ -40,6 +43,11 @@ function Header({ currentPage, onNavigate }) {
     { id: 'presets', label: 'Presets' },
     { id: 'learn', label: 'Learn' },
   ]
+
+  const handleNavClick = (id) => {
+    onNavigate(id)
+    setMobileMenuOpen(false) // Close mobile menu after navigating
+  }
 
   return (
     <header className="header" role="banner">
@@ -68,25 +76,60 @@ function Header({ currentPage, onNavigate }) {
             <button
               key={item.id}
               className={`header-nav-item ${currentPage === item.id ? 'active' : ''}`}
-              onClick={() => onNavigate(item.id)}
+              onClick={() => handleNavClick(item.id)}
             >
               {item.label}
             </button>
           ))}
         </nav>
 
-        {/* CTA — Primary call to action */}
+        {/* CTA — Primary call to action (Desktop) */}
         <div className="header-actions">
           {currentPage === 'landing' && (
             <button 
-              className="header-cta"
-              onClick={() => onNavigate('editor')}
+              className="header-cta desktop-only"
+              onClick={() => handleNavClick('editor')}
             >
               Get Started
             </button>
           )}
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="mobile-menu-toggle"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Overlay */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav-overlay">
+          <nav className="mobile-nav-list">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                className={`mobile-nav-item ${currentPage === item.id ? 'active' : ''}`}
+                onClick={() => handleNavClick(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+            {currentPage === 'landing' && (
+              <button 
+                className="mobile-nav-cta"
+                onClick={() => handleNavClick('editor')}
+              >
+                Get Started
+              </button>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

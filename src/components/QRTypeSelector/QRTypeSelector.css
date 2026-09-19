@@ -91,6 +91,35 @@
 /* --- Mobile: Horizontal scrollable selector ----- */
 @media (max-width: 1024px) {
   .qr-type-selector {
-    /* On tablet/mobile, this becomes a horizontal bar at the top of the editor */
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-4);
+  }
+
+  .qr-type-selector-title {
+    display: none;
+  }
+
+  .qr-type-list {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .qr-type-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .qr-type-item {
+    flex-direction: column;
+    text-align: center;
+    min-width: 80px;
+    padding: var(--space-2);
+  }
+
+  .qr-type-desc {
+    display: none; /* Hide descriptions to save space */
   }
 }
