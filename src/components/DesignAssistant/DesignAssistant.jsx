@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { Palette, Wand2 } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Palette, Wand2, Image as ImageIcon, Upload } from 'lucide-react'
 import { parseDesignIntent } from '../../ai/designAssistant'
-import { generateTheme } from '../../services/mlApi'
+import { generateTheme, analyzeImage } from '../../services/mlApi'
 import './DesignAssistant.css'
 
 /*
@@ -19,6 +19,38 @@ function DesignAssistant({ onApplyStyle }) {
   const [input, setInput] = useState('')
   const [isAnimating, setIsAnimating] = useState(false)
   const [feedback, setFeedback] = useState('')
+  const fileInputRef = useRef(null)
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setIsAnimating(true)
+    setFeedback('Analyzing image...')
+
+    try {
+      const apiResult = await analyzeImage(file)
+      
+      if (apiResult && apiResult.palette) {
+        const newConfig = {
+          foregroundColor: apiResult.palette.foreground,
+          backgroundColor: apiResult.palette.background,
+          errorCorrection: apiResult.qr.error_correction,
+          margin: apiResult.qr.margin
+        }
+        onApplyStyle(newConfig)
+        setFeedback(`Derived theme applied!`)
+      } else {
+        setFeedback("Failed to process image.")
+      }
+    } catch (err) {
+      console.error(err)
+      setFeedback("An error occurred.")
+    } finally {
+      setIsAnimating(false)
+      setTimeout(() => setFeedback(''), 3000)
+    }
+  }
 
   const handleProcess = async () => {
     if (!input.trim()) return
@@ -91,6 +123,25 @@ function DesignAssistant({ onApplyStyle }) {
           onKeyDown={handleKeyDown}
           disabled={isAnimating}
         />
+        
+        <input 
+          type="file" 
+          accept="image/*" 
+          ref={fileInputRef} 
+          style={{ display: 'none' }} 
+          onChange={handleImageUpload}
+        />
+        
+        <button 
+          className="da-image-btn"
+          onClick={() => fileInputRef.current.click()}
+          disabled={isAnimating}
+          aria-label="Upload reference image"
+          title="Upload reference image"
+        >
+          <ImageIcon size={14} />
+        </button>
+
         <button 
           className={`da-submit ${isAnimating ? 'animating' : ''}`}
           onClick={handleProcess}

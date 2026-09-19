@@ -54,7 +54,7 @@
   outline: none;
 }
 
-.da-submit {
+.da-submit, .da-image-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,12 +68,12 @@
   transition: all var(--transition-fast);
 }
 
-.da-submit:hover:not(:disabled) {
+.da-submit:hover:not(:disabled), .da-image-btn:hover:not(:disabled) {
   background-color: var(--color-accent-light);
   color: var(--color-accent);
 }
 
-.da-submit:disabled {
+.da-submit:disabled, .da-image-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

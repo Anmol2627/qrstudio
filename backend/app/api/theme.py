@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, File, UploadFile
 from app.schemas.theme import ThemeRequest, ThemeSpec, ThemePalette, ThemeVisual, ThemeQR
+from app.utils.image_processing import get_dominant_colors
 import re
 
 router = APIRouter()
@@ -96,3 +97,39 @@ async def generate_theme(request: ThemeRequest):
     )
     
     return spec
+
+@router.post("/ai/theme/image", response_model=ThemeSpec)
+async def generate_theme_from_image(file: UploadFile = File(...)):
+    if not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image.")
+        
+    try:
+        contents = await file.read()
+        colors = get_dominant_colors(contents, k=3)
+        
+        # Sort colors: let's assume the darkest is foreground, lightest is background
+        # For simplicity, we just take the first two extracted centers
+        fg = colors[0]
+        bg = colors[1] if len(colors) > 1 else '#FFFFFF'
+        
+        spec = ThemeSpec(
+            theme_name="Image Derived Theme",
+            mood="adaptive",
+            style="derived",
+            palette=ThemePalette(
+                foreground=fg,
+                background=bg,
+                accent=colors[2] if len(colors) > 2 else None
+            ),
+            visual=ThemeVisual(
+                gradient=False,
+                pattern="standard"
+            ),
+            qr=ThemeQR(
+                error_correction="H",
+                margin=4
+            )
+        )
+        return spec
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Image processing failed: {str(e)}")

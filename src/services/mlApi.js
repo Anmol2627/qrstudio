@@ -76,4 +76,22 @@ export const generateTheme = async (prompt) => {
   }
 }
 
+/**
+ * Extract a ThemeSpec from an uploaded image.
+ */
+export const analyzeImage = async (file) => {
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    return await fetchWithTimeout(`${API_URL}/ai/theme/image`, {
+      method: 'POST',
+      body: formData
+    }, 10000) // 10s timeout for image upload
+  } catch (error) {
+    console.warn("ML Image analysis failed.", error)
+    return null
+  }
+}
+
 // TODO: Implement other endpoints (reliability) as we build them on the backend.
