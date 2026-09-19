@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import QRCode from 'qrcode'
 import { QR_TYPES } from '../../data/constants'
-import { Download, Copy, Maximize2 } from 'lucide-react'
+import { Download, Copy, Maximize2, Image as ImageIcon } from 'lucide-react'
 import './QRPreview.css'
 
 /*
@@ -48,6 +48,12 @@ function QRPreview({ config, onSave }) {
   const canvasRef = useRef(null)
   const [error, setError] = useState(null)
   const [isEmpty, setIsEmpty] = useState(true)
+  const [toast, setToast] = useState(null)
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 3000)
+  }
 
   /*
     buildQRString converts the structured config data into the
@@ -134,28 +140,51 @@ function QRPreview({ config, onSave }) {
     })
   }, [config]) // Re-run whenever any config property changes
 
-  // Download the QR code as PNG
-  const handleDownload = () => {
+  // Download the QR code as PNG or SVG
+  const handleDownload = (format = 'png') => {
     const canvas = canvasRef.current
     if (!canvas || isEmpty) return
 
-    /*
-      canvas.toDataURL() converts the canvas content to a base64-encoded
-      PNG image string. We create a temporary <a> link element, set its
-      href to this data URL, and programmatically click it to trigger
-      the browser's download dialog.
+    const qrString = buildQRString()
+    const options = {
+      width: config.size,
+      margin: config.margin,
+      color: {
+        dark: config.foregroundColor,
+        light: config.backgroundColor,
+      },
+      errorCorrectionLevel: config.errorCorrection,
+    }
+
+    if (format === 'svg') {
+      // Generate SVG string asynchronously
+      QRCode.toString(qrString, { ...options, type: 'svg' }, (err, svgString) => {
+        if (err) {
+          showToast('Failed to generate SVG', 'error')
+          return
+        }
+        const blob = new Blob([svgString], { type: 'image/svg+xml' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download = `qrstudio-${config.type}-${Date.now()}.svg`
+        link.href = url
+        link.click()
+        URL.revokeObjectURL(url)
+        
+        if (onSave) onSave()
+        showToast('SVG Downloaded!')
+      })
+    } else {
+      // Standard Canvas to PNG download
+      const dataUrl = canvas.toDataURL('image/png')
+      const link = document.createElement('a')
+      link.download = `qrstudio-${config.type}-${Date.now()}.png`
+      link.href = dataUrl
+      link.click()
       
-      This is the standard browser-only approach for downloading
-      canvas content. No backend needed.
-    */
-    const dataUrl = canvas.toDataURL('image/png')
-    const link = document.createElement('a')
-    link.download = `qrstudio-${config.type}-${Date.now()}.png`
-    link.href = dataUrl
-    link.click()
-    
-    // Auto-save to recent history upon successful download
-    if (onSave) onSave()
+      if (onSave) onSave()
+      showToast('PNG Downloaded!')
+    }
   }
 
   // Copy QR code to clipboard
@@ -180,13 +209,12 @@ function QRPreview({ config, onSave }) {
         new ClipboardItem({ 'image/png': blob })
       ])
       
-      // Auto-save to recent history upon successful copy
       if (onSave) onSave()
+      showToast('Copied to Clipboard!')
       
-      // TODO: Show a "Copied!" toast notification (Phase 14)
     } catch (err) {
       console.error('Copy to clipboard failed:', err)
-      // TODO: Show error toast
+      showToast('Copy failed. Try downloading instead.', 'error')
     }
   }
 
@@ -213,6 +241,13 @@ function QRPreview({ config, onSave }) {
           </div>
         )}
 
+        {/* Toast Notification overlay */}
+        {toast && (
+          <div className={`qr-preview-toast ${toast.type}`}>
+            {toast.message}
+          </div>
+        )}
+
         <canvas 
           ref={canvasRef}
           className={`qr-preview-canvas ${isEmpty ? 'hidden' : ''}`}
@@ -224,7 +259,7 @@ function QRPreview({ config, onSave }) {
       <div className="qr-preview-actions">
         <button 
           className="qr-action-primary"
-          onClick={handleDownload}
+          onClick={() => handleDownload('png')}
           disabled={isEmpty}
           aria-label="Download QR code as PNG"
         >
@@ -234,12 +269,21 @@ function QRPreview({ config, onSave }) {
         <div className="qr-action-secondary-group">
           <button 
             className="qr-action-secondary"
+            onClick={() => handleDownload('svg')}
+            disabled={isEmpty}
+            aria-label="Download QR code as SVG"
+          >
+            <ImageIcon size={14} />
+            SVG
+          </button>
+          <button 
+            className="qr-action-secondary"
             onClick={handleCopy}
             disabled={isEmpty}
             aria-label="Copy QR code to clipboard"
           >
             <Copy size={14} />
-            Copy to Clipboard
+            Copy
           </button>
         </div>
       </div>
