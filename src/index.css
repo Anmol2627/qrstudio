@@ -1,0 +1,296 @@
+/* ===================================================================
+   QR STUDIO — Global Design System
+   ===================================================================
+   
+   WHY CSS VARIABLES?
+   ------------------
+   CSS Variables (Custom Properties) let us define our entire color
+   palette, spacing scale, typography, and shadows in ONE place.
+   
+   Every component references these variables instead of hardcoding
+   values. This means:
+   1. Changing a color here changes it everywhere instantly.
+   2. Dark mode becomes trivial — we just reassign the variables.
+   3. The design stays consistent without a UI framework.
+   
+   THE COLOR PALETTE
+   -----------------
+   We're using a warm, natural palette inspired by the reference image:
+   - Warm off-white / cream backgrounds (not cold pure white)
+   - Deep forest green as the primary accent
+   - Charcoal for text (not harsh black)
+   - Sage and muted greens for secondary elements
+   - Amber for warnings, red for errors, green for success
+   
+   This gives the app a "quietly intelligent" feel — professional
+   and calm, not flashy or "AI startup"-ish.
+   =================================================================== */
+
+/* --- Reset & Base ------------------------------------------------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* --- CSS Custom Properties (Design Tokens) ----------------------- */
+:root {
+  /* 
+     PRIMARY PALETTE
+     These are the foundational colors of QR Studio.
+     "hsl" format gives us easy control over lightness/saturation.
+  */
+  --color-bg-primary: #FAF8F5;        /* Warm off-white — main background */
+  --color-bg-secondary: #F3F0EB;      /* Slightly deeper cream — cards, panels */
+  --color-bg-tertiary: #EBE7E0;       /* Warm beige — hover states, borders */
+  
+  --color-surface: #FFFFFF;            /* Pure white — input fields, QR preview canvas */
+  --color-surface-raised: #FFFFFF;     /* Elevated surfaces (cards with shadow) */
+
+  /* 
+     ACCENT — Deep Forest Green
+     This is the brand color. Used sparingly for CTAs, 
+     selected states, and key interactive elements.
+  */
+  --color-accent: #1B4332;             /* Deep forest green */
+  --color-accent-hover: #2D6A4F;      /* Lighter green for hover */
+  --color-accent-light: #D8F3DC;      /* Very light green — subtle backgrounds */
+  --color-accent-muted: #95D5B2;      /* Muted sage — secondary highlights */
+
+  /* TEXT */
+  --color-text-primary: #2D2D2D;       /* Charcoal — main body text */
+  --color-text-secondary: #6B6B6B;     /* Muted gray — secondary/helper text */
+  --color-text-tertiary: #9B9B9B;      /* Light gray — placeholders, disabled */
+  --color-text-inverse: #FFFFFF;       /* White — text on dark backgrounds */
+
+  /* BORDERS */
+  --color-border: #E5E1DB;             /* Warm subtle border */
+  --color-border-focus: #1B4332;       /* Green border on focus — accessibility */
+
+  /* SEMANTIC COLORS — for feedback states */
+  --color-success: #2D6A4F;            /* Green — positive checks */
+  --color-warning: #B8860B;            /* Dark goldenrod — warnings */
+  --color-error: #C1121F;              /* Deep red — errors */
+  --color-info: #457B9D;               /* Muted blue — informational */
+
+  /* 
+     TYPOGRAPHY
+     Using Inter — a modern, highly readable sans-serif designed
+     specifically for screen readability. The font-weight scale
+     creates clear visual hierarchy without needing many font sizes.
+  */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  
+  --font-size-xs: 0.75rem;    /* 12px — labels, badges */
+  --font-size-sm: 0.8125rem;  /* 13px — helper text, captions */
+  --font-size-base: 0.9375rem;/* 15px — body text */
+  --font-size-md: 1.0625rem;  /* 17px — section titles */
+  --font-size-lg: 1.25rem;    /* 20px — card headers */
+  --font-size-xl: 1.625rem;   /* 26px — page titles */
+  --font-size-2xl: 2.25rem;   /* 36px — hero heading */
+  --font-size-3xl: 3rem;      /* 48px — landing hero (large screens) */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  /* 
+     SPACING SCALE
+     Consistent spacing prevents the "everything looks randomly placed" 
+     problem. Based on a 4px grid (0.25rem).
+  */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+
+  /* 
+     BORDER RADIUS
+     Moderate rounding — friendly but not excessively bubbly.
+  */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;   /* Pill shape for badges, tags */
+
+  /* 
+     SHADOWS
+     Subtle, warm-toned shadows. Not harsh black drop-shadows.
+     The rgba uses a warm brown tone instead of pure black.
+  */
+  --shadow-sm: 0 1px 3px rgba(45, 45, 45, 0.04), 0 1px 2px rgba(45, 45, 45, 0.06);
+  --shadow-md: 0 4px 12px rgba(45, 45, 45, 0.06), 0 2px 4px rgba(45, 45, 45, 0.04);
+  --shadow-lg: 0 12px 32px rgba(45, 45, 45, 0.08), 0 4px 8px rgba(45, 45, 45, 0.04);
+  --shadow-xl: 0 20px 48px rgba(45, 45, 45, 0.1), 0 8px 16px rgba(45, 45, 45, 0.05);
+
+  /* 
+     TRANSITIONS
+     Consistent animation timing across the app.
+     "ease-out" feels natural — fast start, gentle stop.
+  */
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 250ms ease-out;
+  --transition-slow: 400ms ease-out;
+
+  /* LAYOUT */
+  --header-height: 64px;
+  --sidebar-width: 200px;
+  --max-content-width: 1280px;
+}
+
+/* --- Dark Mode Override ------------------------------------------ 
+   When we implement dark mode later, we'll simply reassign these
+   variables inside a [data-theme="dark"] selector. Every component
+   that references the variables will automatically update.
+   No component CSS changes needed!
+*/
+
+/* --- Base Element Styles ----------------------------------------- */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  min-height: 100vh;
+}
+
+/* Smooth scrolling for the page, but respect user preferences */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* --- Headings ---------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+h1 { font-size: var(--font-size-2xl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+h4 { font-size: var(--font-size-md); }
+
+/* --- Links ------------------------------------------------------- */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* --- Focus Styles (Accessibility) -------------------------------- 
+   Visible focus rings are CRITICAL for keyboard navigation.
+   We use the :focus-visible pseudo-class so focus rings only
+   appear during keyboard navigation, not on mouse clicks.
+*/
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* --- Buttons (Base) ---------------------------------------------- */
+button {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* --- Inputs (Base) ----------------------------------------------- */
+input,
+select,
+textarea {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+/* --- Selection --------------------------------------------------- */
+::selection {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+/* --- Scrollbar Styling ------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* --- Utility Classes --------------------------------------------- */
+
+/* Screen reader only — hides visually but keeps accessible to assistive tech */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

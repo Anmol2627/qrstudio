@@ -1,0 +1,32 @@
+/* ===================================================================
+   App-Level Layout Styles
+   ===================================================================
+   These styles control the top-level layout of the application.
+   Component-specific styles live inside each component's own CSS file.
+   
+   WHY separate CSS files per component?
+   Because it keeps styles close to the component they affect.
+   If you delete a component, you delete its styles too.
+   No orphaned CSS rules cluttering a massive single file.
+   =================================================================== */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  /* Push content below the fixed header */
+  padding-top: var(--header-height);
+}
+
+.editor-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--header-height));
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+}

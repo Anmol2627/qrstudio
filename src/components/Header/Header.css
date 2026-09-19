@@ -1,0 +1,104 @@
+/* ===================================================================
+   Header Component Styles
+   =================================================================== */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background-color: rgba(250, 248, 245, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+}
+
+/* --- Logo -------------------------------------------------------- */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: opacity var(--transition-fast);
+}
+
+.header-logo:hover {
+  opacity: 0.8;
+}
+
+.header-logo-text {
+  color: var(--color-text-primary);
+}
+
+/* --- Navigation -------------------------------------------------- */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.header-nav-item {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.header-nav-item:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-tertiary);
+}
+
+.header-nav-item.active {
+  color: var(--color-accent);
+  background-color: var(--color-accent-light);
+}
+
+/* --- CTA Button -------------------------------------------------- */
+.header-cta {
+  padding: var(--space-2) var(--space-5);
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.header-cta:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-1px);
+}
+
+.header-cta:active {
+  transform: translateY(0);
+}
+
+/* --- Responsive -------------------------------------------------- */
+@media (max-width: 768px) {
+  .header-nav {
+    display: none; /* Hidden on mobile — we'll add a mobile menu later */
+  }
+
+  .header-inner {
+    padding: 0 var(--space-4);
+  }
+}

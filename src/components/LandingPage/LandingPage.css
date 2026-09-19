@@ -1,0 +1,252 @@
+/* ===================================================================
+   Landing Page Styles
+   ===================================================================
+   The landing page uses a warm, minimal aesthetic with generous
+   whitespace and strong typography hierarchy.
+   =================================================================== */
+
+.landing {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+/* --- Hero Section ------------------------------------------------ */
+.landing-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-12) 0 var(--space-16);
+  min-height: calc(70vh - var(--header-height));
+}
+
+.landing-hero-content {
+  flex: 1;
+  max-width: 520px;
+}
+
+.landing-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent);
+  background-color: var(--color-accent-light);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-6);
+}
+
+.landing-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.1;
+  margin-bottom: var(--space-3);
+}
+
+.landing-subtitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent);
+  margin-bottom: var(--space-5);
+}
+
+.landing-description {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-8);
+  max-width: 420px;
+}
+
+/* --- CTA Button -------------------------------------------------- */
+.landing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), 
+              transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+
+.landing-cta:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.landing-cta:active {
+  transform: translateY(0);
+}
+
+/* --- Hero Visual / Preview Card ---------------------------------- */
+.landing-hero-visual {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 440px;
+}
+
+.landing-preview-card {
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 360px;
+}
+
+.landing-preview-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.landing-preview-qr {
+  color: var(--color-accent);
+  padding: var(--space-4);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+}
+
+.landing-preview-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+.landing-type-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-secondary);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+}
+
+/* --- Features Grid ----------------------------------------------- */
+.landing-features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  padding: var(--space-10) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.landing-feature-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+}
+
+.landing-feature-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+  margin-bottom: var(--space-1);
+}
+
+.landing-feature-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.landing-feature-desc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+/* --- Responsive -------------------------------------------------- */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .landing-hero {
+    gap: var(--space-8);
+  }
+
+  .landing-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .landing-features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .landing {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .landing-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-8) 0 var(--space-10);
+    min-height: auto;
+  }
+
+  .landing-hero-content {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .landing-description {
+    max-width: 100%;
+  }
+
+  .landing-hero-visual {
+    max-width: 320px;
+  }
+
+  .landing-features {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .landing-title {
+    font-size: 2rem;
+  }
+
+  .landing-features {
+    grid-template-columns: 1fr;
+  }
+}
