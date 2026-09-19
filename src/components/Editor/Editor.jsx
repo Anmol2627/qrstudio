@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import QRTypeSelector from '../QRTypeSelector/QRTypeSelector'
 import QRForm from '../QRForm/QRForm'
 import QRPreview from '../QRPreview/QRPreview'

@@ -7,6 +7,7 @@ import {
   QR_MARGIN_MIN, 
   QR_MARGIN_MAX 
 } from '../../data/constants'
+import DesignAssistant from '../DesignAssistant/DesignAssistant'
 import './CustomizationPanel.css'
 
 /*
@@ -48,6 +49,9 @@ function CustomizationPanel({ config, onConfigChange }) {
   return (
     <div className="customization-panel">
       <h2 className="customization-title">Customization</h2>
+
+      {/* AI Design Assistant */}
+      <DesignAssistant onApplyStyle={onConfigChange} />
 
       {/* --- Size Control --- */}
       <div className="custom-group">

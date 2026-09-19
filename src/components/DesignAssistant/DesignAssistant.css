@@ -1,0 +1,103 @@
+/* ===================================================================
+   Design Assistant Styles
+   =================================================================== */
+
+.design-assistant {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.da-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.da-icon {
+  color: var(--color-accent);
+}
+
+.da-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.da-input-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.da-input-wrapper:focus-within {
+  border-color: var(--color-accent);
+}
+
+.da-input {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.da-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  margin: var(--space-1);
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.da-submit:hover:not(:disabled) {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.da-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.da-submit.animating .wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+  color: var(--color-accent);
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.da-feedback {
+  font-size: var(--font-size-xs);
+  color: var(--color-accent);
+  animation: fadeIn 200ms ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
