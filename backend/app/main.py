@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import health
+from app.api import content
+from app.api import theme
 
 app = FastAPI(
     title="QR Studio AI Backend",
@@ -19,6 +21,8 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health.router, prefix="/api", tags=["Health"])
+app.include_router(content.router, prefix="/api", tags=["Content"])
+app.include_router(theme.router, prefix="/api", tags=["Theme"])
 
 @app.get("/")
 def root():

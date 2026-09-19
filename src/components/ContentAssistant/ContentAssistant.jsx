@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Sparkles, ArrowRight } from 'lucide-react'
 import { parseNaturalLanguageInput } from '../../ai/contentAssistant'
+import { classifyContent } from '../../services/mlApi'
 import './ContentAssistant.css'
 
 /*
@@ -19,22 +20,41 @@ function ContentAssistant({ onParsed }) {
   const [input, setInput] = useState('')
   const [isAnimating, setIsAnimating] = useState(false)
 
-  const handleProcess = () => {
+  const handleProcess = async () => {
     if (!input.trim()) return
 
     // Add a slight artificial delay for the "AI thinking" effect.
     // This improves perceived value and user trust.
     setIsAnimating(true)
     
-    setTimeout(() => {
-      const result = parseNaturalLanguageInput(input)
-      if (result) {
-        onParsed({ type: result.type, data: result.data })
+    try {
+      // First attempt to use the ML Backend
+      const apiResult = await classifyContent(input)
+      
+      let finalResult = null
+      
+      if (apiResult && apiResult.type) {
+        // Map backend response
+        finalResult = {
+          type: apiResult.type,
+          data: apiResult.entities || {}
+        }
+      } else {
+        // Graceful fallback to heuristic engine if API is unavailable or fails
+        console.log("Using heuristic fallback for content assistant.")
+        finalResult = parseNaturalLanguageInput(input)
+      }
+
+      if (finalResult) {
+        onParsed({ type: finalResult.type, data: finalResult.data })
         // Clear input after successful parsing
         setInput('')
       }
+    } catch (e) {
+      console.error(e)
+    } finally {
       setIsAnimating(false)
-    }, 400) // 400ms is enough to feel like "processing" without being annoying
+    }
   }
 
   const handleKeyDown = (e) => {

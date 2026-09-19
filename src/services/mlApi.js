@@ -40,4 +40,40 @@ export const checkHealth = async () => {
   }
 }
 
-// TODO: Implement other endpoints (content, theme, reliability) as we build them on the backend.
+/**
+ * Predict content intent and extract entities using the NLP model.
+ */
+export const classifyContent = async (text) => {
+  try {
+    return await fetchWithTimeout(`${API_URL}/ai/content`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text })
+    })
+  } catch (error) {
+    console.warn("ML Content analysis failed. Falling back to heuristics.", error)
+    return null
+  }
+}
+
+/**
+ * Generate a ThemeSpec from a natural language prompt.
+ */
+export const generateTheme = async (prompt) => {
+  try {
+    return await fetchWithTimeout(`${API_URL}/ai/theme`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ prompt })
+    })
+  } catch (error) {
+    console.warn("ML Theme generation failed. Falling back to heuristics.", error)
+    return null
+  }
+}
+
+// TODO: Implement other endpoints (reliability) as we build them on the backend.

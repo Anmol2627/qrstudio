@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Palette, Wand2 } from 'lucide-react'
 import { parseDesignIntent } from '../../ai/designAssistant'
+import { generateTheme } from '../../services/mlApi'
 import './DesignAssistant.css'
 
 /*
@@ -19,32 +20,51 @@ function DesignAssistant({ onApplyStyle }) {
   const [isAnimating, setIsAnimating] = useState(false)
   const [feedback, setFeedback] = useState('')
 
-  const handleProcess = () => {
+  const handleProcess = async () => {
     if (!input.trim()) return
 
     setIsAnimating(true)
     setFeedback('')
     
-    setTimeout(() => {
-      const result = parseDesignIntent(input)
-      if (result) {
-        if (result.preset) {
-          onApplyStyle(result.preset.config)
-          setFeedback(`Applied ${result.preset.name} style!`)
-        } else if (result.customConfig) {
-          onApplyStyle(result.customConfig)
-          setFeedback('Applied custom color!')
+    try {
+      // First attempt to use the ML Backend
+      const apiResult = await generateTheme(input)
+      
+      if (apiResult && apiResult.palette) {
+        // Map backend ThemeSpec to our local QR Config
+        const newConfig = {
+          foregroundColor: apiResult.palette.foreground,
+          backgroundColor: apiResult.palette.background,
+          errorCorrection: apiResult.qr.error_correction,
+          margin: apiResult.qr.margin
         }
+        onApplyStyle(newConfig)
+        setFeedback(`Applied ${apiResult.theme_name}!`)
         setInput('')
       } else {
-        setFeedback("Couldn't quite understand that style.")
+        // Graceful fallback to heuristics
+        console.log("Using heuristic fallback for design assistant.")
+        const result = parseDesignIntent(input)
+        if (result) {
+          if (result.preset) {
+            onApplyStyle(result.preset.config)
+            setFeedback(`Applied ${result.preset.name} style!`)
+          } else if (result.customConfig) {
+            onApplyStyle(result.customConfig)
+            setFeedback('Applied custom color!')
+          }
+          setInput('')
+        } else {
+          setFeedback("Couldn't quite understand that style.")
+        }
       }
-      
+    } catch (e) {
+      console.error(e)
+      setFeedback("An error occurred.")
+    } finally {
       setIsAnimating(false)
-      
-      // Clear feedback after a few seconds
       setTimeout(() => setFeedback(''), 3000)
-    }, 400)
+    }
   }
 
   const handleKeyDown = (e) => {
