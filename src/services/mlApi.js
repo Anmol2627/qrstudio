@@ -94,4 +94,20 @@ export const analyzeImage = async (file) => {
   }
 }
 
-// TODO: Implement other endpoints (reliability) as we build them on the backend.
+/**
+ * Evaluate the scannability of a QR configuration using the ML model.
+ */
+export const analyzeReliability = async (configParams) => {
+  try {
+    return await fetchWithTimeout(`${API_URL}/ai/reliability`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(configParams)
+    })
+  } catch (error) {
+    console.warn("ML Reliability analysis failed. Falling back to heuristics.", error)
+    return null
+  }
+}

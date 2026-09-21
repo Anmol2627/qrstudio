@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import health
 from app.api import content
 from app.api import theme
+from app.api import reliability
 
 app = FastAPI(
     title="QR Studio AI Backend",
@@ -23,6 +24,7 @@ app.add_middleware(
 app.include_router(health.router, prefix="/api", tags=["Health"])
 app.include_router(content.router, prefix="/api", tags=["Content"])
 app.include_router(theme.router, prefix="/api", tags=["Theme"])
+app.include_router(reliability.router, prefix="/api", tags=["Reliability"])
 
 @app.get("/")
 def root():

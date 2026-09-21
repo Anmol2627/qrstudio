@@ -32,6 +32,19 @@
   letter-spacing: 0.05em;
 }
 
+.ra-score {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-tertiary);
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+}
+
 .ra-list {
   list-style: none;
   display: flex;

@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import { AlertTriangle, ShieldAlert, Sparkles } from 'lucide-react'
+import { useEffect, useState, useRef } from 'react'
+import { AlertTriangle, ShieldAlert, Sparkles, Activity } from 'lucide-react'
 import { evaluateReliability } from '../../ai/reliabilityAssistant'
+import { analyzeReliability } from '../../services/mlApi'
 import './ReliabilityAssistant.css'
 
 /*
@@ -18,13 +19,48 @@ import './ReliabilityAssistant.css'
 */
 function ReliabilityAssistant({ config, onFix }) {
   const [warnings, setWarnings] = useState([])
+  const [score, setScore] = useState(null)
+  const debounceRef = useRef(null)
 
-  // Re-evaluate whenever the config changes (debouncing isn't really needed 
-  // here since the math is extremely fast and synchronous, but if it were 
-  // complex ML, we would debounce it).
   useEffect(() => {
-    const results = evaluateReliability(config)
-    setWarnings(results)
+    // Clear previous timeout
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+
+    // Debounce the ML API call by 500ms
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const params = {
+          size: config.size,
+          margin: config.margin,
+          error_correction: config.errorCorrection,
+          foreground_color: config.foregroundColor,
+          background_color: config.backgroundColor
+        }
+        
+        const mlResult = await analyzeReliability(params)
+        
+        if (mlResult) {
+          // Use ML results
+          setScore(mlResult.score)
+          const mappedWarnings = mlResult.issues.map(msg => ({
+            level: mlResult.scannable ? 'warning' : 'critical',
+            message: msg,
+            fix: Object.keys(mlResult.recommendations).length > 0 ? mlResult.recommendations : null
+          }))
+          setWarnings(mappedWarnings)
+        } else {
+          // Fallback to heuristics
+          setScore(null)
+          setWarnings(evaluateReliability(config))
+        }
+      } catch (err) {
+        console.error(err)
+        setScore(null)
+        setWarnings(evaluateReliability(config))
+      }
+    }, 500)
+
+    return () => clearTimeout(debounceRef.current)
   }, [config])
 
   if (warnings.length === 0) return null
@@ -34,6 +70,12 @@ function ReliabilityAssistant({ config, onFix }) {
       <div className="ra-header">
         <ShieldAlert size={16} className="ra-header-icon" />
         <span className="ra-title">Scan Warnings</span>
+        {score !== null && (
+          <div className="ra-score" title="ML Confidence Score">
+            <Activity size={12} />
+            <span>{Math.round(score * 100)}%</span>
+          </div>
+        )}
       </div>
       
       <ul className="ra-list">
