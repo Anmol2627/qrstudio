@@ -141,3 +141,39 @@ export const generatePoster = async (file, url) => {
     return null
   }
 }
+
+/**
+ * Generate an ARTISTIC QR code where the image becomes the QR pattern.
+ * Returns a Blob URL for the generated image.
+ *
+ * darkStrength (0.0–0.4): how dark the dark modules become (lower = more image visible but harder to scan)
+ * lightStrength (0.5–1.0): how light the light modules become (higher = cleaner but less image visible)
+ */
+export const generateArtisticQr = async (file, url, lumThreshold = 0.40, outputSize = 600) => {
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('url', url)
+    formData.append('lum_threshold', lumThreshold)
+    formData.append('output_size', outputSize)
+
+    const controller = new AbortController()
+    const id = setTimeout(() => controller.abort(), 30000) // 30s timeout (image processing is slow)
+
+    const response = await fetch(`${API_URL}/ai/artistic-qr`, {
+      method: 'POST',
+      body: formData,
+      signal: controller.signal
+    })
+
+    clearTimeout(id)
+
+    if (!response.ok) throw new Error('Artistic QR generation failed')
+
+    const blob = await response.blob()
+    return URL.createObjectURL(blob)
+  } catch (error) {
+    console.warn("Artistic QR generation failed.", error)
+    return null
+  }
+}

@@ -1,0 +1,86 @@
+.image-cropper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cropper-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.cropper-skip-btn {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.cropper-canvas-wrapper {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background-color: #000;
+  /* Make it scrollable if the canvas is taller than viewport */
+  max-height: 60vh;
+  overflow-y: auto;
+  line-height: 0; /* Remove gap below canvas */
+}
+
+.cropper-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cropper-actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+.cropper-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.cropper-btn.secondary {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.cropper-btn.secondary:hover {
+  background-color: var(--color-border);
+}
+
+.cropper-btn.primary {
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+}
+
+.cropper-btn.primary:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.cropper-btn.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
