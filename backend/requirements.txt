@@ -8,3 +8,4 @@ joblib
 opencv-python
 Pillow
 python-multipart
+qrcode

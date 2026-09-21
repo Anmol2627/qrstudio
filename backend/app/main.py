@@ -4,6 +4,7 @@ from app.api import health
 from app.api import content
 from app.api import theme
 from app.api import reliability
+from app.api import poster
 
 app = FastAPI(
     title="QR Studio AI Backend",
@@ -25,6 +26,7 @@ app.include_router(health.router, prefix="/api", tags=["Health"])
 app.include_router(content.router, prefix="/api", tags=["Content"])
 app.include_router(theme.router, prefix="/api", tags=["Theme"])
 app.include_router(reliability.router, prefix="/api", tags=["Reliability"])
+app.include_router(poster.router, prefix="/api", tags=["Poster"])
 
 @app.get("/")
 def root():

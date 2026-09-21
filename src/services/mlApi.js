@@ -111,3 +111,33 @@ export const analyzeReliability = async (configParams) => {
     return null
   }
 }
+/**
+ * Generate a composited QR Poster.
+ * Returns a Blob URL for the generated image.
+ */
+export const generatePoster = async (file, url) => {
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('url', url)
+    
+    const controller = new AbortController()
+    const id = setTimeout(() => controller.abort(), 15000) // 15s timeout
+    
+    const response = await fetch(`${API_URL}/ai/poster-qr`, {
+      method: 'POST',
+      body: formData,
+      signal: controller.signal
+    })
+    
+    clearTimeout(id)
+    
+    if (!response.ok) throw new Error('Poster generation failed')
+    
+    const blob = await response.blob()
+    return URL.createObjectURL(blob)
+  } catch (error) {
+    console.warn("ML Poster generation failed.", error)
+    return null
+  }
+}

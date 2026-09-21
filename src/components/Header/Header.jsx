@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { QrCode, Menu, X } from 'lucide-react'
+import { QrCode, Menu, X, FileImage } from 'lucide-react'
+import PosterStudio from '../PosterStudio/PosterStudio'
 import './Header.css'
 
 /*
@@ -34,6 +35,7 @@ import './Header.css'
 */
 function Header({ currentPage, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showPosterStudio, setShowPosterStudio] = useState(false)
 
   // Navigation items — defined as data so we can map over them
   // This avoids repeating the same JSX structure for each link
@@ -50,8 +52,9 @@ function Header({ currentPage, onNavigate }) {
   }
 
   return (
-    <header className="header" role="banner">
-      <div className="header-inner">
+    <>
+      <header className="header" role="banner">
+        <div className="header-inner">
         {/* 
           LOGO SECTION
           The logo doubles as a "home" button. Clicking it returns
@@ -85,6 +88,15 @@ function Header({ currentPage, onNavigate }) {
 
         {/* CTA — Primary call to action (Desktop) */}
         <div className="header-actions">
+          <button 
+            className="poster-studio-btn desktop-only"
+            onClick={() => setShowPosterStudio(true)}
+            title="Launch Poster Studio"
+          >
+            <FileImage size={16} />
+            <span>Poster Studio</span>
+          </button>
+          
           {currentPage === 'landing' && (
             <button 
               className="header-cta desktop-only"
@@ -131,6 +143,8 @@ function Header({ currentPage, onNavigate }) {
         </div>
       )}
     </header>
+      {showPosterStudio && <PosterStudio onClose={() => setShowPosterStudio(false)} />}
+    </>
   )
 }
 
