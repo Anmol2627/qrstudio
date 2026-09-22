@@ -1,17 +1,7 @@
 import { PRESETS } from '../data/presets'
 
 /*
-  AI DESIGN ASSISTANT — Heuristic Engine
-  ======================================
-  
-  WHAT IT DOES:
-  Parses a user's natural language design intent (e.g. "make it look dark"
-  or "I want a professional blue style") and maps it to one of our visual presets
-  or extracts specific colors.
-  
-  HOW IT WORKS:
-  Uses a dictionary of keywords mapped to our predefined PRESETS.
-  If no preset matches perfectly, it returns null.
+  DESIGN ASSISTANT — Heuristic Engine
 */
 
 export const parseDesignIntent = (input) => {

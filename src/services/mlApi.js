@@ -149,12 +149,13 @@ export const generatePoster = async (file, url) => {
  * darkStrength (0.0–0.4): how dark the dark modules become (lower = more image visible but harder to scan)
  * lightStrength (0.5–1.0): how light the light modules become (higher = cleaner but less image visible)
  */
-export const generateArtisticQr = async (file, url, lumThreshold = 0.40, outputSize = 600) => {
+export const generateArtisticQr = async (file, url, lumThreshold = 0.40, lightTint = 0.25, outputSize = 600) => {
   try {
     const formData = new FormData()
     formData.append('file', file)
     formData.append('url', url)
     formData.append('lum_threshold', lumThreshold)
+    formData.append('light_tint', lightTint)
     formData.append('output_size', outputSize)
 
     const controller = new AbortController()

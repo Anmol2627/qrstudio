@@ -5,7 +5,7 @@ import './ImageCropper.css'
   IMAGE CROPPER COMPONENT
   =======================
 
-  HOW IT WORKS (Browser Canvas API):
+  Interactive canvas component for selecting image regions.
 
   We render the user's image onto an HTML <canvas> element.
   When the user clicks and drags, we track the mouse coordinates

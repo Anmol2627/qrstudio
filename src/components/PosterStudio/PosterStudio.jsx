@@ -24,12 +24,6 @@ import './PosterStudio.css'
     Step 2 → Crop (Artistic mode only)
     Step 3 → Configure (URL + sliders)
     Step 4 → Result
-
-  KEY CONCEPTS (for interviews):
-  - "Lifting state up": the crop result (File) is managed here, not in ImageCropper
-  - "Controlled components": all sliders are controlled via state
-  - generateArtisticQr sends dark_strength and light_strength to the backend
-    which controls how visible the image vs. QR pattern is
 */
 
 export default function PosterStudio({ onClose }) {
@@ -48,6 +42,7 @@ export default function PosterStudio({ onClose }) {
   // Configuration
   const [url, setUrl] = useState('')
   const [darkStrength, setDarkStrength] = useState(0.40)   // lum_threshold: 0.1–0.7
+  const [lightTint, setLightTint] = useState(0.25)          // light_tint: 0.0–0.65
 
   // UI state
   const [result, setResult] = useState(null)
@@ -103,7 +98,7 @@ export default function PosterStudio({ onClose }) {
       if (mode === 'themed') {
         outputUrl = await generatePoster(activeFile, url)
       } else {
-        outputUrl = await generateArtisticQr(activeFile, url, darkStrength)
+        outputUrl = await generateArtisticQr(activeFile, url, darkStrength, lightTint)
       }
 
       if (outputUrl) {
@@ -250,17 +245,34 @@ export default function PosterStudio({ onClose }) {
                         <label>
                           Color Sensitivity
                           <span className="pm-slider-desc">
-                            Lower = more image colors shine through &nbsp;|&nbsp; Higher = darker, more scannable
+                            Lower = more image colors preserved &nbsp;|&nbsp; Higher = bolder contrast
                           </span>
                         </label>
                         <div className="pm-slider-track">
-                          <span style={{fontSize:'0.7rem', opacity:0.6}}>Vibrant</span>
+                          <span style={{fontSize:'0.7rem', opacity:0.6}}>Vivid</span>
                           <input
                             type="range" min="0.10" max="0.70" step="0.05"
                             value={darkStrength}
                             onChange={e => setDarkStrength(parseFloat(e.target.value))}
                           />
                           <span style={{fontSize:'0.7rem', opacity:0.6}}>Bold</span>
+                        </div>
+                      </div>
+                      <div className="pm-slider-row">
+                        <label>
+                          Image Visibility
+                          <span className="pm-slider-desc">
+                            Blends image into the white gaps — makes the full image appear
+                          </span>
+                        </label>
+                        <div className="pm-slider-track">
+                          <span style={{fontSize:'0.7rem', opacity:0.6}}>Clean</span>
+                          <input
+                            type="range" min="0.00" max="0.65" step="0.05"
+                            value={lightTint}
+                            onChange={e => setLightTint(parseFloat(e.target.value))}
+                          />
+                          <span style={{fontSize:'0.7rem', opacity:0.6}}>Rich</span>
                         </div>
                       </div>
                     </div>

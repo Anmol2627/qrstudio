@@ -1,16 +1,5 @@
 /*
   RELIABILITY ASSISTANT — Scoring Engine
-  ======================================
-  
-  WHAT IT DOES:
-  Evaluates the current QR configuration to ensure it will scan properly
-  in the real world. QR codes can fail if:
-  1. Contrast is too low (e.g. gray on gray)
-  2. Foreground is lighter than background (inverted — some scanners fail)
-  3. Size is too small for dense data
-  
-  HOW IT WORKS:
-  Uses the WCAG relative luminance formula to calculate contrast ratio.
 */
 
 // Helper: Convert hex to RGB
